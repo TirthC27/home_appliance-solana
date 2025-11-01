@@ -54,10 +54,10 @@ function Typewriter({ text, speed = 20 }: { text: string; speed?: number }) {
 const AIInsights: React.FC = () => {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 12 }}
+      initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -12 }}
-      transition={{ duration: 0.35 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 0.3 }}
       className="ai-insights-page"
     >
       <div className="page-header">

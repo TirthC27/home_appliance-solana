@@ -3,6 +3,10 @@ import { motion } from 'framer-motion';
 import { useWallet } from '../contexts/WalletContext.tsx';
 import { useNavigate } from 'react-router-dom';
 import './ShadowHomeDashboard.css';
+import './CyberPulseBackground.css';
+import './ShadowHomeFooter.css';
+import CyberPulseBackground from './CyberPulseBackground.tsx';
+import ShadowHomeFooter from './ShadowHomeFooter.tsx';
 import {
   Home,
   Activity,
@@ -127,6 +131,9 @@ const ShadowHomeDashboard: React.FC = () => {
 
   return (
     <div className="dashboard-container">
+      {/* CyberPulse Background */}
+      <CyberPulseBackground />
+      
       {/* Sidebar */}
       <motion.div
         initial={{ x: -100, opacity: 0 }}
@@ -242,41 +249,58 @@ const ShadowHomeDashboard: React.FC = () => {
         {/* Dashboard Content */}
         <main className="dashboard-main">
           {/* Stats Grid */}
-          <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="stats-grid"
-          >
-            <StatCard
-              title="Home Energy"
-              value="2.4 kW"
-              change="+5.2%"
-              icon={<Zap className="w-5 h-5" style={{ color: '#facc15' }} />}
-              color="energy"
-            />
-            <StatCard
-              title="Security Status"
-              value="Active"
-              change="100%"
-              icon={<Shield className="w-5 h-5" style={{ color: '#10b981' }} />}
-              color="security"
-            />
-            <StatCard
-              title="Temperature"
-              value="22°C"
-              change="+1°C"
-              icon={<Thermometer className="w-5 h-5" style={{ color: '#60a5fa' }} />}
-              color="temperature"
-            />
-            <StatCard
-              title="Data Synced"
-              value="98.7%"
-              change="+2.1%"
-              icon={<Database className="w-5 h-5" style={{ color: '#a855f7' }} />}
-              color="data"
-            />
-          </motion.div>
+          <div className="stats-grid">
+            {[
+              {
+                title: "Home Energy",
+                value: "2.4 kW",
+                change: "+5.2%",
+                icon: <Zap className="w-5 h-5" style={{ color: '#facc15' }} />,
+                color: "energy"
+              },
+              {
+                title: "Security Status", 
+                value: "Active",
+                change: "100%",
+                icon: <Shield className="w-5 h-5" style={{ color: '#10b981' }} />,
+                color: "security"
+              },
+              {
+                title: "Temperature",
+                value: "22°C", 
+                change: "+1°C",
+                icon: <Thermometer className="w-5 h-5" style={{ color: '#60a5fa' }} />,
+                color: "temperature"
+              },
+              {
+                title: "Data Synced",
+                value: "98.7%",
+                change: "+2.1%", 
+                icon: <Database className="w-5 h-5" style={{ color: '#a855f7' }} />,
+                color: "data"
+              }
+            ].map((card, index) => (
+              <motion.div
+                key={card.title}
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ 
+                  duration: 0.5, 
+                  delay: index * 0.1,
+                  type: "spring",
+                  stiffness: 100 
+                }}
+              >
+                <StatCard
+                  title={card.title}
+                  value={card.value}
+                  change={card.change}
+                  icon={card.icon}
+                  color={card.color}
+                />
+              </motion.div>
+            ))}
+          </div>
 
           <div className="content-grid">
             {/* Main Activity Panel */}
@@ -462,6 +486,9 @@ const ShadowHomeDashboard: React.FC = () => {
             </motion.div>
           </div>
         </main>
+        
+        {/* Footer */}
+        <ShadowHomeFooter />
       </div>
     </div>
   );

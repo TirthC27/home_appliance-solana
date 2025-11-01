@@ -6,6 +6,7 @@ import {
   Smartphone, 
   Calendar, 
   Brain, 
+  Bot,
   Settings as SettingsIcon, 
   Menu, 
   X, 
@@ -17,8 +18,10 @@ import Dashboard from '../pages/Dashboard.tsx';
 import Devices from '../pages/Devices.tsx';
 import Events from '../pages/Events.tsx';
 import AIInsights from '../pages/AIInsights.tsx';
+import AiComm from '../pages/AiComm.tsx';
 import Settings from '../pages/Settings.tsx';
 import './DashboardLayout.css';
+import './ShadowHomeFooter.css';
 
 interface NavItem {
   icon: React.ReactNode;
@@ -38,6 +41,7 @@ const DashboardLayout: React.FC = () => {
     { icon: <Smartphone className="nav-icon" />, label: 'Devices', path: '/dashboard/devices', key: 'devices' },
     { icon: <Calendar className="nav-icon" />, label: 'Events', path: '/dashboard/events', key: 'events' },
     { icon: <Brain className="nav-icon" />, label: 'AI Insights', path: '/dashboard/ai-insights', key: 'ai-insights' },
+    { icon: <Bot className="nav-icon" />, label: 'MirrorMesh AI Communication', path: '/dashboard/ai-comm', key: 'ai-comm' },
     { icon: <SettingsIcon className="nav-icon" />, label: 'Settings', path: '/dashboard/settings', key: 'settings' },
   ];
 
@@ -229,10 +233,14 @@ const DashboardLayout: React.FC = () => {
               <Route path="devices" element={<Devices />} />
               <Route path="events" element={<Events />} />
               <Route path="ai-insights" element={<AIInsights />} />
+              <Route path="ai-comm" element={<AiComm />} />
               <Route path="settings" element={<Settings />} />
             </Routes>
           </AnimatePresence>
         </div>
+        
+        {/* Footer for all pages */}
+        
       </main>
     </div>
   );

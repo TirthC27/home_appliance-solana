@@ -48,9 +48,9 @@ const AnimatedCounter: React.FC<{ value: number; suffix?: string }> = ({ value, 
 const Dashboard: React.FC = () => {
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.95 }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.3 }}
       className="dashboard-page"
     >
@@ -136,32 +136,33 @@ const Dashboard: React.FC = () => {
             <div className="activity-chart">
               <ResponsiveContainer width="100%" height={300}>
                 <LineChart data={ENERGY_DATA}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
                   <XAxis 
                     dataKey="time" 
-                    stroke="rgba(255,255,255,0.6)"
+                    stroke="#64748b"
                     fontSize={12}
                   />
                   <YAxis 
-                    stroke="rgba(255,255,255,0.6)"
+                    stroke="#64748b"
                     fontSize={12}
                   />
                   <Tooltip 
                     contentStyle={{
-                      backgroundColor: 'rgba(26, 27, 62, 0.9)',
-                      border: '1px solid rgba(148, 85, 247, 0.3)',
-                      borderRadius: '8px',
-                      color: 'white'
+                      backgroundColor: '#ffffff',
+                      border: '2px solid #3b82f6',
+                      borderRadius: '12px',
+                      color: '#1e293b',
+                      boxShadow: '0 4px 16px rgba(0,0,0,0.1)'
                     }}
-                    labelStyle={{ color: '#9945ff' }}
+                    labelStyle={{ color: '#3b82f6', fontWeight: '600' }}
                   />
                   <Line 
                     type="monotone" 
                     dataKey="usage" 
-                    stroke="#14f195"
+                    stroke="#10b981"
                     strokeWidth={3}
-                    dot={{ fill: '#9945ff', strokeWidth: 2, r: 4 }}
-                    activeDot={{ r: 6, stroke: '#14f195', strokeWidth: 2 }}
+                    dot={{ fill: '#3b82f6', strokeWidth: 2, r: 4 }}
+                    activeDot={{ r: 6, stroke: '#10b981', strokeWidth: 2 }}
                   />
                 </LineChart>
               </ResponsiveContainer>

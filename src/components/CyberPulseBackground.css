@@ -1,0 +1,74 @@
+/* CyberPulse Background Animation */
+.cyberpulse-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.cyberpulse-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  mix-blend-mode: screen;
+}
+
+.cyberpulse-orb.main {
+  width: 600px;
+  height: 600px;
+  top: 20%;
+  left: 60%;
+  background: radial-gradient(
+    circle,
+    rgba(195, 7, 63, 0.4) 0%,
+    rgba(139, 92, 246, 0.3) 30%,
+    rgba(102, 252, 241, 0.2) 60%,
+    transparent 100%
+  );
+}
+
+.cyberpulse-orb.secondary {  
+  width: 800px;
+  height: 800px;
+  top: -10%;
+  right: -20%;
+  background: radial-gradient(
+    circle,
+    rgba(102, 252, 241, 0.3) 0%,
+    rgba(139, 92, 246, 0.2) 40%,
+    rgba(195, 7, 63, 0.1) 70%,
+    transparent 100%
+  );
+}
+
+.cyberpulse-orb.tertiary {
+  width: 400px;
+  height: 400px;
+  bottom: 10%;
+  left: -10%;
+  background: radial-gradient(
+    circle,
+    rgba(139, 92, 246, 0.5) 0%,
+    rgba(195, 7, 63, 0.3) 50%,
+    rgba(102, 252, 241, 0.1) 80%,
+    transparent 100%
+  );
+}
+
+/* Enhanced card glow on cyberpulse background */
+.dashboard-container .stat-card:hover {
+  background: rgba(26, 27, 62, 0.8);
+  backdrop-filter: blur(20px);
+}
+
+.dashboard-container .activity-panel:hover,
+.dashboard-container .tokens-panel:hover,
+.dashboard-container .calendar-widget:hover {
+  background: rgba(26, 27, 62, 0.8);
+  backdrop-filter: blur(20px);
+  border-color: rgba(139, 92, 246, 0.4);
+}

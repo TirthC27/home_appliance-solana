@@ -168,7 +168,7 @@ const Events: React.FC = () => {
                     )}
                   </td>
                   <td>
-                    <span style={{ color: 'rgba(255, 255, 255, 0.7)' }}>{event.details}</span>
+                    <span style={{ color: 'var(--text-tertiary)' }}>{event.details}</span>
                   </td>
                 </motion.tr>
               ))}

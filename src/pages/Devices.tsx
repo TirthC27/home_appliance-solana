@@ -1,138 +1,147 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  Lightbulb, 
+  Plug, 
+  Camera, 
+  Wind, 
+  Tv, 
+  Thermometer,
+  Zap, 
+  Gauge, 
+  Battery,
+  Activity,
+  Clock,
+  ThermometerSun,
+  Power,
+  TrendingUp
+} from 'lucide-react';
+import { devicesData, devicesSummary, DeviceData } from '../data/devices.ts';
+import './PowerDevices.css';
 
-// Static device data
-const DEVICE_DATA = [
-  {
-    id: 1,
-    name: 'Living Room Light',
-    icon: '💡',
-    status: true,
-    type: 'light',
-    location: 'Living Room',
-    power: '12W'
-  },
-  {
-    id: 2,
-    name: 'Security Camera',
-    icon: '📹',
-    status: true,
-    type: 'camera',
-    location: 'Front Door',
-    power: '8W'
-  },
-  {
-    id: 3,
-    name: 'Smart Door Lock',
-    icon: '🔒',
-    status: false,
-    type: 'lock',
-    location: 'Main Entrance',
-    power: '3W'
-  },
-  {
-    id: 4,
-    name: 'Motion Sensor',
-    icon: '🚶',
-    status: true,
-    type: 'sensor',
-    location: 'Hallway',
-    power: '1W'
-  },
-  {
-    id: 5,
-    name: 'Air Conditioning',
-    icon: '❄️',
-    status: false,
-    type: 'climate',
-    location: 'Bedroom',
-    power: '1200W'
-  },
-  {
-    id: 6,
-    name: 'Smart Thermostat',
-    icon: '🌡️',
-    status: true,
-    type: 'thermostat',
-    location: 'Living Room',
-    power: '5W'
-  }
-];
+// Icon mapping for device types
+const getDeviceIcon = (iconType: string) => {
+  const iconMap = {
+    lightbulb: Lightbulb,
+    plug: Plug,
+    camera: Camera,
+    wind: Wind,
+    tv: Tv,
+    thermometer: Thermometer
+  };
+  const IconComponent = iconMap[iconType as keyof typeof iconMap] || Power;
+  return <IconComponent size={24} />;
+};
 
-interface Device {
-  id: number;
-  name: string;
-  icon: string;
-  status: boolean;
-  type: string;
-  location: string;
-  power: string;
-}
-
-const DeviceCard: React.FC<{ device: Device; onToggle: (id: number) => void }> = ({ device, onToggle }) => {
+const DeviceCard: React.FC<{ device: DeviceData; onToggle: (id: number) => void }> = ({ device, onToggle }) => {
+  const isActive = device.status === 'ON';
+  
   return (
     <motion.div
       layout
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       whileHover={{ y: -4, scale: 1.02 }}
-      whileTap={{ scale: 0.98 }}
-      className="device-card"
+      className="power-device-card"
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
     >
-      <div className="device-header">
-        <div className="device-icon-wrapper">
+      {/* Device Header */}
+      <div className="power-device-header">
+        <div className="device-icon-container">
           <motion.div
-            className="device-icon"
+            className={`power-device-icon ${isActive ? 'active' : 'inactive'}`}
             animate={{ 
-              rotate: device.status ? [0, 10, -10, 0] : 0,
-              scale: device.status ? [1, 1.1, 1] : 1
+              scale: isActive ? [1, 1.1, 1] : 1,
             }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.5, repeat: isActive ? Infinity : 0, repeatDelay: 3 }}
           >
-            {device.icon}
+            {getDeviceIcon(device.icon)}
           </motion.div>
         </div>
+        
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => onToggle(device.id)}
-          className={`device-toggle ${device.status ? 'active' : 'inactive'}`}
+          className={`power-toggle ${isActive ? 'active' : 'inactive'}`}
         >
           <motion.div
-            className="toggle-slider"
-            animate={{ x: device.status ? 20 : 0 }}
+            className="power-toggle-slider"
+            animate={{ x: isActive ? 24 : 2 }}
             transition={{ type: "spring", stiffness: 500, damping: 30 }}
           />
+          <Power size={12} className="toggle-icon" />
         </motion.button>
       </div>
       
-      <div className="device-info">
-        <h3 className="device-name">{device.name}</h3>
-        <p className="device-location">{device.location}</p>
-        <div className="device-details">
-          <span className={`device-status ${device.status ? 'online' : 'offline'}`}>
-            {device.status ? 'Online' : 'Offline'}
-          </span>
-          <span className="device-power">{device.power}</span>
+      {/* Device Info */}
+      <div className="power-device-info">
+        <h3 className="power-device-name">{device.name}</h3>
+        <p className="power-device-type">{device.type}</p>
+        
+        <div className={`power-status-badge ${isActive ? 'online' : 'offline'}`}>
+          <motion.div
+            className="status-indicator"
+            animate={{ 
+              scale: isActive ? [1, 1.2, 1] : 1,
+              opacity: isActive ? [1, 0.7, 1] : 0.5
+            }}
+            transition={{ duration: 2, repeat: isActive ? Infinity : 0 }}
+          />
+          {device.status}
         </div>
       </div>
       
+      {/* Power Metrics */}
       <AnimatePresence>
-        {device.status && (
+        {isActive && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="device-activity"
+            className="power-metrics"
           >
-            <div className="activity-indicator">
-              <motion.div
-                className="pulse-dot"
-                animate={{ scale: [1, 1.2, 1], opacity: [1, 0.7, 1] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              />
-              <span>Active</span>
+            <div className="metrics-grid">
+              <div className="metric-item">
+                <Zap size={14} className="metric-icon power" />
+                <span className="metric-value">{device.power}W</span>
+                <span className="metric-label">Power</span>
+              </div>
+              
+              <div className="metric-item">
+                <Gauge size={14} className="metric-icon voltage" />
+                <span className="metric-value">{device.voltage}V</span>
+                <span className="metric-label">Voltage</span>
+              </div>
+              
+              <div className="metric-item">
+                <Activity size={14} className="metric-icon current" />
+                <span className="metric-value">{device.current}A</span>
+                <span className="metric-label">Current</span>
+              </div>
+              
+              <div className="metric-item">
+                <Battery size={14} className="metric-icon energy" />
+                <span className="metric-value">{device.energy_today}</span>
+                <span className="metric-label">kWh Today</span>
+              </div>
+              
+              <div className="metric-item">
+                <TrendingUp size={14} className="metric-icon total" />
+                <span className="metric-value">{device.energy_total}</span>
+                <span className="metric-label">Total kWh</span>
+              </div>
+              
+              <div className="metric-item">
+                <ThermometerSun size={14} className="metric-icon temp" />
+                <span className="metric-value">{device.temperature}°C</span>
+                <span className="metric-label">Temp</span>
+              </div>
+            </div>
+            
+            <div className="last-seen">
+              <Clock size={12} />
+              <span>Last seen: {device.last_seen}</span>
             </div>
           </motion.div>
         )}
@@ -142,52 +151,69 @@ const DeviceCard: React.FC<{ device: Device; onToggle: (id: number) => void }> =
 };
 
 const Devices: React.FC = () => {
-  const [devices, setDevices] = useState<Device[]>(DEVICE_DATA);
+  const [devices, setDevices] = useState<DeviceData[]>(devicesData);
 
   const handleToggleDevice = (deviceId: number) => {
     setDevices(prev => 
       prev.map(device => 
         device.id === deviceId 
-          ? { ...device, status: !device.status }
+          ? { ...device, status: device.status === 'ON' ? 'OFF' : 'ON' }
           : device
       )
     );
   };
 
-  const activeDevices = devices.filter(device => device.status).length;
+  const activeDevices = devices.filter(device => device.status === 'ON').length;
+  const totalPower = devices.reduce((sum, device) => sum + (device.status === 'ON' ? device.power : 0), 0);
+  const totalEnergyToday = devices.reduce((sum, device) => sum + device.energy_today, 0);
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.95 }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.3 }}
-      className="devices-page"
+      className="power-devices-page"
     >
       <div className="page-header">
         <div>
-          <h1 className="page-title">Devices</h1>
-          <p className="page-subtitle">Manage your connected home devices</p>
+          <h1 className="page-title">Power Dashboard</h1>
+          <p className="page-subtitle">Real-time IoT device monitoring & control</p>
         </div>
         <motion.div 
-          className="devices-summary"
+          className="power-summary"
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.3 }}
         >
-          <div className="summary-stat">
-            <span className="stat-number">{activeDevices}</span>
-            <span className="stat-label">Active</span>
+          <div className="power-summary-card">
+            <Zap size={18} className="summary-icon" />
+            <div className="summary-data">
+              <span className="summary-value">{totalPower.toFixed(1)}W</span>
+              <span className="summary-label">Total Power</span>
+            </div>
           </div>
-          <div className="summary-stat">
-            <span className="stat-number">{devices.length}</span>
-            <span className="stat-label">Total</span>
+          
+          <div className="power-summary-card">
+            <Activity size={18} className="summary-icon" />
+            <div className="summary-data">
+              <span className="summary-value">{activeDevices}/{devices.length}</span>
+              <span className="summary-label">Active</span>
+            </div>
+          </div>
+          
+          <div className="power-summary-card">
+            <Battery size={18} className="summary-icon" />
+            <div className="summary-data">
+              <span className="summary-value">{totalEnergyToday.toFixed(1)}</span>
+              <span className="summary-label">kWh Today</span>
+            </div>
           </div>
         </motion.div>
       </div>
       
       <motion.div 
-        className="devices-grid"
+        className="power-devices-grid"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}

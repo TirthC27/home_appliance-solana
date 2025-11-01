@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { useWallet } from '../contexts/WalletContext';
+import { useWallet } from '../contexts/WalletContext.tsx';
 import { useNavigate } from 'react-router-dom';
 import { Wallet, Shield, Zap } from 'lucide-react';
 
